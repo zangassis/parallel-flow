@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ParallelFlow")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a73474fcad8d39c2825bf8608764ebd1d1fe0a4f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b893291f941edbfc9757f2879cf2e6b5ba917185")]
 [assembly: System.Reflection.AssemblyProductAttribute("ParallelFlow")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ParallelFlow")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
