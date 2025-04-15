@@ -119,7 +119,7 @@ async Task<string> SimulateApiCall(string name, int delay, CancellationToken tok
     }
     catch (OperationCanceledException)
     {
-        Console.WriteLine($"❌ {name} was cancelled.");
+        Console.WriteLine($"❌ {name} was cancelled");
         throw;
     }
 }
@@ -153,7 +153,7 @@ void RunInvoke()
         () => PerformingAnAction("SendDataToC", 2000)
     );
 
-    Console.WriteLine("All tasks are finished.");
+    Console.WriteLine("All tasks are finished");
 }
 
 void PerformingAnAction(string name, int delay)
@@ -188,7 +188,7 @@ async Task ExecuteAsync()
         }
     );
 
-    // At this point, 'processedUsers' contains all the results
+    // At this point processedUsers contains all the results
     Console.WriteLine($"Total processed users: {processedUsers.Count}");
 }
 
@@ -200,7 +200,7 @@ async Task<string> FetchUserDataAsync(int userId)
 
 async Task<string> ProcessUserDataAsync(string userData)
 {
-    await Task.Delay(50); // Simulate processing work
+    await Task.Delay(50); //simulate processing work
     return $"Processed-{userData}";
 }
 
