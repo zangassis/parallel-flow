@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
-#region Parallel.ForEach
+#region 1 - Parallel.ForEach
 
 void Process()
 {
@@ -52,7 +52,30 @@ TimeSpan MeasureTime(Action action)
 
 #endregion
 
-#region Task.WhenAll and Task.WhenAny
+#region 2 - Parallel.Invoke
+
+void RunInvoke()
+{
+    Parallel.Invoke(
+        () => PerformingAnAction("SendDataToA", 1000),
+        () => PerformingAnAction("SendDataToB", 500),
+        () => PerformingAnAction("SendDataToC", 2000)
+    );
+
+    Console.WriteLine("All tasks are finished");
+}
+
+void PerformingAnAction(string name, int delay)
+{
+    Console.WriteLine($"Starting {name} on thread {Thread.CurrentThread.ManagedThreadId}");
+    Thread.Sleep(delay);
+    Console.WriteLine($"Ending {name}");
+}
+
+//RunInvoke();
+#endregion
+
+#region 3 - Task.WhenAll and Task.WhenAny
 async Task UsingWhenAll()
 {
     var task1 = Task.Delay(2000).ContinueWith(_ => "Task 1 done");
@@ -129,7 +152,7 @@ async Task<string> SimulateApiCall(string name, int delay, CancellationToken tok
 //await UsingWhenAnyCancel();
 #endregion
 
-#region Task.Run
+#region 4 - Task.Run
 async Task<string> ProcessDataAsync()
 {
     return await Task.Run(() =>
@@ -143,30 +166,7 @@ async Task<string> ProcessDataAsync()
 //await ProcessDataAsync();
 #endregion
 
-#region Parallel.Invoke
-
-void RunInvoke()
-{
-    Parallel.Invoke(
-        () => PerformingAnAction("SendDataToA", 1000),
-        () => PerformingAnAction("SendDataToB", 500),
-        () => PerformingAnAction("SendDataToC", 2000)
-    );
-
-    Console.WriteLine("All tasks are finished");
-}
-
-void PerformingAnAction(string name, int delay)
-{
-    Console.WriteLine($"Starting {name} on thread {Thread.CurrentThread.ManagedThreadId}");
-    Thread.Sleep(delay);
-    Console.WriteLine($"Ending {name}");
-}
-
-//RunInvoke();
-#endregion
-
-#region Parallel.ForEachAsync
+#region 5 - Parallel.ForEachAsync
 async Task ExecuteAsync()
 {
     var userIds = Enumerable.Range(1, 100).ToList();
