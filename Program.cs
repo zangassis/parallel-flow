@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 
 #region Parallel.ForEach
 
@@ -140,4 +141,68 @@ async Task<string> ProcessDataAsync()
 }
 
 //await ProcessDataAsync();
+#endregion
+
+#region Parallel.Invoke
+
+void RunInvoke()
+{
+    Parallel.Invoke(
+        () => PerformingAnAction("SendDataToA", 1000),
+        () => PerformingAnAction("SendDataToB", 500),
+        () => PerformingAnAction("SendDataToC", 2000)
+    );
+
+    Console.WriteLine("All tasks are finished.");
+}
+
+void PerformingAnAction(string name, int delay)
+{
+    Console.WriteLine($"Starting {name} on thread {Thread.CurrentThread.ManagedThreadId}");
+    Thread.Sleep(delay);
+    Console.WriteLine($"Ending {name}");
+}
+
+//RunInvoke();
+#endregion
+
+#region Parallel.ForEachAsync
+async Task ExecuteAsync()
+{
+    var userIds = Enumerable.Range(1, 100).ToList();
+    var processedUsers = new ConcurrentBag<string>();
+
+    var parallelOptions = new ParallelOptions
+    {
+        MaxDegreeOfParallelism = Environment.ProcessorCount
+    };
+
+    await Parallel.ForEachAsync(
+        userIds,
+        parallelOptions,
+        async (userId, cancellationToken) =>
+        {
+            var userData = await FetchUserDataAsync(userId);
+            var result = await ProcessUserDataAsync(userData);
+            processedUsers.Add(result);
+        }
+    );
+
+    // At this point, 'processedUsers' contains all the results
+    Console.WriteLine($"Total processed users: {processedUsers.Count}");
+}
+
+async Task<string> FetchUserDataAsync(int userId)
+{
+    await Task.Delay(100); // Simulate I/O-bound async work
+    return $"UserData-{userId}";
+}
+
+async Task<string> ProcessUserDataAsync(string userData)
+{
+    await Task.Delay(50); // Simulate processing work
+    return $"Processed-{userData}";
+}
+
+await ExecuteAsync();
 #endregion
